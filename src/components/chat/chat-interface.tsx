@@ -116,6 +116,7 @@ export function ChatInterface() {
       display: 'flex',
       flexDirection: 'column',
       height: '100%',
+      width: '100%',
       overflow: 'hidden',
       background: 'var(--background)',
     }}>
