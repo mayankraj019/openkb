@@ -24,20 +24,14 @@ export async function POST(req: NextRequest) {
     const arrayBuffer = await file.arrayBuffer();
     const uint8Array = new Uint8Array(arrayBuffer);
 
-    // Parse PDF page by page using unpdf's lower-level API
+    // Parse PDF using unpdf
     let fullText = '';
     try {
       const pdf = await getDocumentProxy(uint8Array);
-      const totalPages = pdf.numPages;
+      const { text: pageTexts } = await extractText(pdf, { mergePages: false });
 
-      for (let pageNum = 1; pageNum <= totalPages; pageNum++) {
-        const { text: pageTexts } = await extractText(pdf, { pageNumbers: [pageNum] });
-        // pageTexts is string | string[] — normalise to string
-        if (Array.isArray(pageTexts)) {
-          fullText += pageTexts.join(' ') + '\n';
-        } else if (typeof pageTexts === 'string') {
-          fullText += pageTexts + '\n';
-        }
+      for (const pageText of pageTexts) {
+        fullText += pageText + '\n';
       }
     } catch (parseErr) {
       console.error('PDF parse error:', parseErr);
