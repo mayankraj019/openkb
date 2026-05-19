@@ -87,11 +87,12 @@ export default function ChatPage() {
           {/* Document Section/Panel */}
           <div
             className={cn(
-              "border-r bg-muted/10 flex-col h-full shrink-0 transition-all duration-300 ease-in-out z-10",
-              // Desktop layout logic: toggleable sidebar
-              showDocsSidebar ? "md:w-80 md:flex" : "md:w-0 md:hidden",
+              "bg-muted/10 flex-col h-full shrink-0 transition-all duration-300 ease-in-out z-10 overflow-hidden",
+              showDocsSidebar ? "border-r border-border" : "border-r border-transparent",
               // Mobile layout logic: Tab based display
-              mobileTab === 'docs' ? "w-full flex" : "hidden md:flex"
+              mobileTab === 'docs' ? "w-full flex" : "hidden md:flex",
+              // Desktop layout logic: toggleable sidebar width transition
+              showDocsSidebar ? "md:w-80" : "md:w-0"
             )}
           >
             {/* Header for Document Section */}

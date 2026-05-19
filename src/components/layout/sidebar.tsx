@@ -13,11 +13,13 @@ const navItems = [
   { name: 'AI Chat', href: '/chat', icon: MessageSquare },
 ];
 
-export function Sidebar() {
-  const pathname = usePathname();
-  const [open, setOpen] = useState(false);
+interface NavContentProps {
+  pathname: string;
+  setOpen: (open: boolean) => void;
+}
 
-  const NavContent = () => (
+function NavContent({ pathname, setOpen }: NavContentProps) {
+  return (
     <div className="flex flex-col h-full bg-card/50 backdrop-blur-md">
       <div className="flex h-14 items-center border-b px-4 py-4 shrink-0">
         <Link className="flex items-center gap-2 font-semibold" href="/" onClick={() => setOpen(false)}>
@@ -63,12 +65,17 @@ export function Sidebar() {
       </div>
     </div>
   );
+}
+
+export function Sidebar() {
+  const pathname = usePathname();
+  const [open, setOpen] = useState(false);
 
   return (
     <>
       {/* Desktop Sidebar (hidden on mobile, shown on md and up) */}
       <aside className="hidden md:flex h-screen w-64 flex-col border-r bg-muted/10 shrink-0">
-        <NavContent />
+        <NavContent pathname={pathname} setOpen={setOpen} />
       </aside>
 
       {/* Mobile Header (shown on mobile, hidden on md and up) */}
@@ -93,7 +100,7 @@ export function Sidebar() {
             <SheetHeader className="sr-only">
               <SheetTitle>Navigation Menu</SheetTitle>
             </SheetHeader>
-            <NavContent />
+            <NavContent pathname={pathname} setOpen={setOpen} />
           </SheetContent>
         </Sheet>
       </header>
